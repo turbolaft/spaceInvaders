@@ -4,13 +4,13 @@
 CC := gcc
 
 # set the compiler flags
-CFLAGS := `sdl2-config --libs --cflags` -ggdb3 -O0 --std=c99 -Wall -lSDL2_image -lm
+CFLAGS := `sdl2-config --libs --cflags` -ggdb3 -O0 --std=c99 -Wall -lSDL2_image -lm -lSDL2_ttf
 ASAN_FLAGS := -g -fsanitize=address
 # add header files here
 HDRS :=
 
 # add source files here
-SRCS := main.c draw.c input.c init.c handlingPlayer.c
+SRCS := main.c draw.c input.c init.c handlingPlayer.c enemies.c underLine.c walls.c
 
 # generate names of object files
 OBJS := $(SRCS:.c=.o)

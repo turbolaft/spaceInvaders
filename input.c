@@ -1,3 +1,4 @@
+#include "common.h"
 #include "structs.h"
 
 void doKeyDown(SDL_KeyboardEvent* event) {

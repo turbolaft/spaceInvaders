@@ -1,3 +1,4 @@
+#include "common.h"
 #include "structs.h"
 #include "defs.h"
 
@@ -25,4 +26,6 @@ void initSDL() {
         printf("Failed to create renderer - %s\n", SDL_GetError());
         exit(1);
     }
+
+    TTF_Init();
 }
