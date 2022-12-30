@@ -4,7 +4,7 @@
 Entity* makeBullet();
 void drawBullets(Entity** listOfBullets, Entity* listOfEnemies, Entity** addedBullet,
         Entity** listOfEnemyBullets, Entity** addedEnemyBullet, Interval** tearUnderLineIntervals,
-        Interval** addedTearUnderLineInterval, Entity* listOfWalls);
+        Interval** addedTearUnderLineInterval, Entity* listOfWalls, Entity* extraEnemy);
 void handlePlayer(Entity** firstBullet, Entity** addedBullet);
 SDL_bool checkOnDeadPlayer(Entity* bullet);
 void* downloadingText(TTF_Font* font, const char* buffer);

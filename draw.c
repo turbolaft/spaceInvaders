@@ -62,22 +62,16 @@ void blit(SDL_Texture *texture, int x, int y, int w, int h)
 
 void setPixelInASurface(SDL_Surface* surface, int x, int y, uint8_t r, uint8_t g, uint8_t b, int depth) {
 
-    // printf("width - %d, height - %d\n", surface->w, surface->h);
-    if(x <= surface->w && y <= surface->h && x >= 0 && y >= 0) {
+    // printf("Height - %d, width - %d, (%d, %d)\n", surface->w, surface->h, x, y);
+    if(x < surface->w  && y < surface->h && x >= 0 && y >= 0) {
         SDL_LockSurface(surface);
         uint8_t* pixelArray = (uint8_t*) surface->pixels;
+        int neededPixel = y*surface->pitch + x*surface->format->BytesPerPixel;
 
-        pixelArray[y*surface->pitch + x*surface->format->BytesPerPixel] = g;
-        pixelArray[y*surface->pitch + x*surface->format->BytesPerPixel + 1] = b;
-        pixelArray[y*surface->pitch + x*surface->format->BytesPerPixel + 2] = r;
-        // rrrrrrrr gggggggg bbbbbbbb
-        // 000000000 0000000 0000000 = 0
+        pixelArray[neededPixel] = g;
+        pixelArray[neededPixel + 1] = b;
+        pixelArray[neededPixel + 2] = r;
+
         SDL_UnlockSurface(surface);
-
-        // if (depth) {
-        //     setPixelInASurface(surface, x + 2, y, r, g, b, 0);
-        //     setPixelInASurface(surface, x - 2, y, r, g, b, 0);
-        //     setPixelInASurface(surface, x, y + 2, r, g, b, 0);
-        // }
     }
 }

@@ -9,6 +9,7 @@
 Entity* makeBullet() {
     Entity* bullet;
     bullet = (Entity*) malloc(sizeof(Entity));
+    memset(bullet, 0, sizeof(Entity));
     bullet->height = 20;
     bullet->dy = BULLET_SPEED;
     bullet->width = 2;
@@ -40,7 +41,7 @@ SDL_bool checkOnDeadPlayer(Entity* bullet) {
 
 void drawBullets(Entity** listOfBullets, Entity* listOfEnemies, Entity** addedBullet,
         Entity** listOfEnemyBullets, Entity** addedEnemyBullet, Interval** tearUnderLineIntervals,
-        Interval** addedTearUnderLineInterval, Entity* listOfWalls) {
+        Interval** addedTearUnderLineInterval, Entity* listOfWalls, Entity* extraEnemy) {
     Entity* t = *listOfBullets;
     Entity* prevT = NULL;
 
@@ -54,6 +55,7 @@ void drawBullets(Entity** listOfBullets, Entity* listOfEnemies, Entity** addedBu
 
         checkOnDeadEnemy(t, listOfEnemies);
         checkOnWallTouch(listOfWalls, t, 0);
+        checkingOnDeadExtraEnemy(t, extraEnemy);
 
         if (t->health) {
             for (int i = 0; i < t->width; i++) {

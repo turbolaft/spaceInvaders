@@ -20,6 +20,22 @@ Entity* makeEnemyBullet(Entity* enemy) {
     return enemyBullet;
 }
 
+Entity* makeExtraEnemy() {
+    Entity* enemyBullet = NULL;
+
+    enemyBullet = (Entity*) malloc(sizeof(Entity));
+    memset(enemyBullet, 0, sizeof(Entity));
+    enemyBullet->width = 100;
+    enemyBullet->height = 35;
+    enemyBullet->y = 60;
+    enemyBullet->x = SCREEN_WIDTH;
+    enemyBullet->health = 1;
+    enemyBullet->dx = 10;
+    enemyBullet->texture = loadTexture(loadSurface("resources/extraEnemy.png"));
+
+    return enemyBullet;
+}
+
 void spawnEnemies(Entity** first, Entity** added) {
     for (int i = 0; i < RAWS_OF_ENEMIES; i++) {
         for (int j = 0; j < COLUMNS_OF_ENEMIES; j++) {
@@ -66,7 +82,7 @@ void representingEnemies(Entity** list) {
         blit(t->texture, t->x, t->y, t->width, t->height);
 
         if (!t->health) {
-            if (t->reload == 60 - ENEMIES_TICK_DELAY) {
+            if (t->reload == 100 - ENEMIES_TICK_DELAY) {
                 if (prevT) {
                     prevT->next = t->next;
                 } else {
@@ -96,6 +112,7 @@ void handlingEnemy(Entity** listOfEnemies, Entity** listOfEnemyBullets, Entity**
         int leftmostPosition = 0;
         int rightmostPosition = 0;
         int numberOfEnemiesAlive = 0;
+        int isShootingAllowed = 0;
 
         if (t->reload == ENEMIES_TICK_DELAY) {
             currentEnemyTick = !t->tick;
@@ -103,6 +120,11 @@ void handlingEnemy(Entity** listOfEnemies, Entity** listOfEnemyBullets, Entity**
             t->reload = 0;
         } else {
             currentEnemyTick = t->tick;
+        }
+
+        if ((t->reload % (ENEMIES_TICK_DELAY - 10) == 0 && t->reload / (ENEMIES_TICK_DELAY - 10) == 1)
+                || (t->reload % 10 == 0 && t->reload / 10 == 1)) {
+            isShootingAllowed = 1;
         }
 
         while (t) {
@@ -160,10 +182,10 @@ void handlingEnemy(Entity** listOfEnemies, Entity** listOfEnemyBullets, Entity**
             
             if (!t->health && t->reload <= ENEMIES_TICK_DELAY) {
                 t->texture = loadTexture(loadSurface("resources/dead.png"));
-                t->reload = 60;
+                t->reload = 100;
             }
 
-            if (countOnLoop == randomEnemyToShoot && isMovementAllowed && t->health) {
+            if (countOnLoop == randomEnemyToShoot && isShootingAllowed && t->health) {
                 if (*listOfEnemyBullets == NULL) {
                     *listOfEnemyBullets = makeEnemyBullet(t);
                     *addedEnemyBullet = *listOfEnemyBullets;
@@ -204,4 +226,37 @@ SDL_bool checkOnDeadEnemy(Entity* bullet, Entity* listOfEnemies) {
         t = t->next;
     }
     return SDL_FALSE;
+}
+
+void spawnExtraEnemy(Entity* extraEnemy) {
+    if (extraEnemy->tick == EXTRA_ENEMY_APPEARANCES) {
+        extraEnemy->x -= extraEnemy->dx;
+        blit(extraEnemy->texture, extraEnemy->x, extraEnemy->y, extraEnemy->width, extraEnemy->height);
+
+        if ((extraEnemy->x + extraEnemy->width) <= 0 || !extraEnemy->health) {
+            extraEnemy->x = SCREEN_WIDTH;
+            extraEnemy->health = 1;
+            extraEnemy->tick = 0;
+        }
+    } else {
+        extraEnemy->tick++;
+    }
+
+}
+
+void checkingOnDeadExtraEnemy(Entity* bullet, Entity* extraEnemy) {
+    const SDL_Rect enemy = {extraEnemy->x, extraEnemy->y, extraEnemy->width, extraEnemy->height};
+
+    for (int i = 0; i < bullet->width; i++) {
+        for (int j = 0; j < bullet->height; j++) {
+            const SDL_Point bulletPoint = {bullet->x + i, bullet->y + j};
+
+            if (SDL_PointInRect(&bulletPoint, &enemy) == SDL_TRUE) {
+                bullet->health = 0;
+                player.score += 40;
+                extraEnemy->health = 0;
+                return;
+            }
+        }
+    }
 }

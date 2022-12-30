@@ -10,7 +10,7 @@ ASAN_FLAGS := -g -fsanitize=address
 HDRS :=
 
 # add source files here
-SRCS := main.c draw.c input.c init.c handlingPlayer.c enemies.c underLine.c walls.c
+SRCS := main.c draw.c input.c init.c handlingPlayer.c enemies.c underLine.c walls.c scenes.c
 
 # generate names of object files
 OBJS := $(SRCS:.c=.o)

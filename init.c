@@ -29,3 +29,18 @@ void initSDL() {
 
     TTF_Init();
 }
+
+long timediff(clock_t t1, clock_t t2) {
+    long elapsed;
+    elapsed = ((double)t2 - t1) / CLOCKS_PER_SEC * 1000;
+    return elapsed;
+}
+
+void freeingAllocations(Entity* allocation) {
+    while(allocation) {
+        Entity* freee = allocation;
+        if (allocation->surface != 0) SDL_FreeSurface(allocation->surface);
+        allocation = allocation->next;
+        free(freee);
+    }
+}

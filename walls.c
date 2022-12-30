@@ -9,7 +9,7 @@ Entity* gettingWall(int x, int y) {
     wall = (Entity*) malloc(sizeof(Entity));
     memset(wall, 0, sizeof(Entity));
 
-    wall->surface = loadSurface("resources/wall.png");
+    wall->surface = loadSurface("resources/wallSmaller.png");
     wall->texture = SDL_CreateTextureFromSurface(app.renderer, wall->surface);
     if (!wall->texture)
     {
@@ -24,8 +24,8 @@ Entity* gettingWall(int x, int y) {
     wall->y = y;
     wall->health = 1;
     wall->next = NULL;
-    wall->width = 100;
-    wall->height = 70;
+    wall->width = 92;
+    wall->height = 64;
 
     return wall;
 }
@@ -53,46 +53,54 @@ void drawingWalls(Entity* listOfWalls) {
     }
 }
 
-SDL_bool checkOnWallTouch(Entity* listOfWalls, Entity* bullet, int isBoom) {
+void checkOnWallTouch(Entity* listOfWalls, Entity* bullet, int isBoom) {
     for (Entity* t = listOfWalls; t != NULL; t = t->next) {
         const SDL_Rect wall = {t->x, t->y, t->width, t->height};
 
-        for (int i = 0; i < bullet->height; i++) {
-            for (int j = 0; j < bullet->width; j++) {
-                const SDL_Point bulletPoint = {bullet->x + j, bullet->y + i};
+        // for (int i = 0; i < bullet->height; i++) {
+        //     for (int j = 0; j < bullet->width; j++) {
+                const SDL_Point bulletPoint = {bullet->x + bullet->width / 2, bullet->y + bullet->height};
                 SDL_LockSurface(t->surface);
                 uint8_t* pixels = (uint8_t*) t->surface->pixels;
-                int pixel = (bulletPoint.y - t->y) * t->surface->w + (bulletPoint.x + t->x);
+                int pixel = ((bulletPoint.y - t->y) / 4) * t->surface->w + ((bulletPoint.x + t->x) / 4);
+
+                // if (SDL_PointInRect(&bulletPoint, &wall) == SDL_TRUE) printf("r - %d, g - %d, b - %d\n", pixels[pixel],
+                //  pixels[pixel + 1], pixels[pixel + 2]);
 
                 if (SDL_PointInRect(&bulletPoint, &wall) == SDL_TRUE 
-                        && !(pixels[pixel] == 0 && pixels[pixel + 1] == 0 && pixels[pixel + 2] == 0)) {
-                    // printf("x - %d, y - %d\n", pixel % screen->pitch, pixel / screen->pitch);
-
+                        && !((pixels[pixel] == 0 || pixels[pixel] == 255) 
+                            && pixels[pixel + 1] == 0
+                            && pixels[pixel + 2] == 0)
+                        && !(pixels[pixel] == 0
+                            && (pixels[pixel + 1] == 0 || pixels[pixel + 1] == 255) 
+                            && pixels[pixel + 2] == 0)
+                        && !(pixels[pixel] == 0
+                            && pixels[pixel + 1] == 0
+                            && (pixels[pixel + 2] == 0 || pixels[pixel + 2] == 255))
+                        ) {
                     if (isBoom) {
                         t->health = 0;
-                        t->dy = bulletPoint.y - wall.y;
-                        t->dx = bulletPoint.x - wall.x;
+                        t->dy = (bulletPoint.y - wall.y) / 4;
+                        t->dx = (bulletPoint.x - wall.x) / 4;
                     }
 
                     bullet->health = 0;
 
                     SDL_UnlockSurface(t->surface);
-                    return SDL_TRUE;
+                    return;
                 }
                 SDL_UnlockSurface(t->surface);
-            }
-        }
+        //     }
+        // }
     }
-    
-    return SDL_FALSE;
 }
 
-SDL_bool boom(int x, int y, float force, int depth, Entity* wall) {
+void boom(int x, int y, float force, int depth, Entity* wall) {
     depth--;
-    if (depth < 0) return SDL_TRUE;
+    if (depth < 0) return;
 
     force -= fmod((float)rand(), 100) / 100 + 0.1;
-    if (force < 0) return SDL_TRUE;
+    if (force < 0) return;
 
     setPixelInASurface(wall->surface, x, y, 0, 0, 0, 1);
     wall->texture = SDL_CreateTextureFromSurface(app.renderer, wall->surface);
@@ -108,14 +116,17 @@ SDL_bool boom(int x, int y, float force, int depth, Entity* wall) {
     boom(x + 1, y, force, depth, wall);
     boom(x - 1, y, force, depth, wall);
     boom(x, y + 1, force, depth, wall);
-
-    return SDL_TRUE;
 }
 
 void wallBoom(Entity* listOfWalls) {
     for (Entity* t = listOfWalls; t != NULL; t = t->next) {
         if (!t->health) {
-            boom(t->dx, t->dy, 3, 40, t);
+            boom(t->dx, t->dy, 3, 5, t);
+            // boom(t->dx - 3, t->dy, 3, 5, t);
+            // boom(t->dx + 3, t->dy, 3, 5, t);
+            // boom(t->dx, t->dy + 3, 3, 5, t);
+            // boom(t->dx + 3, t->dy + 3, 3, 5, t);
+            // boom(t->dx - 3, t->dy + 3, 3, 5, t);
             // SDL_Delay(2000);
 
             t->health = 1;
