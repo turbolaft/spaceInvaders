@@ -31,7 +31,7 @@ Entity* makeExtraEnemy() {
     enemyBullet->x = SCREEN_WIDTH;
     enemyBullet->health = 1;
     enemyBullet->dx = 10;
-    enemyBullet->texture = extraEnemy;
+    enemyBullet->texture = extraEnemyTexture;
 
     return enemyBullet;
 }
@@ -54,11 +54,11 @@ void spawnEnemies(Entity** first, Entity** added) {
             enemy->next = NULL;
 
             if (i == 0) {
-                enemy->texture = enemyFirstRowB;
+                enemy->texture = enemyFirstRowBTexture;
             } else if (i == 1) {
-                enemy->texture = enemySecondRowB;
+                enemy->texture = enemySecondRowBTexture;
             } else if (i > 1) {
-                enemy->texture = enemyOtherRowsB;
+                enemy->texture = enemyOtherRowsBTexture;
             }
 
             if (i == 0 && j == 0) {
@@ -164,24 +164,24 @@ void handlingEnemy(Entity** listOfEnemies, Entity** listOfEnemyBullets, Entity**
 
             if (t->tick && t->health) {
                 if (t->y == TOP_OFFSET_ENEMIES) {
-                    t->texture = enemyFirstRowA;
+                    t->texture = enemyFirstRowATexture;
                 } else if (t->y == (TOP_OFFSET_ENEMIES + t->height + ENEMIES_GAP_Y)) {
-                    t->texture = enemySecondRowA;
+                    t->texture = enemySecondRowATexture;
                 } else if (t->y >= (TOP_OFFSET_ENEMIES + t->height + ENEMIES_GAP_Y)) {
-                    t->texture = enemyOtherRowsA;
+                    t->texture = enemyOtherRowsATexture;
                 }
             } else if (!t->tick && t->health) {
                 if (t->y == TOP_OFFSET_ENEMIES) {
-                    t->texture = enemyFirstRowB;
+                    t->texture = enemyFirstRowBTexture;
                 } else if (t->y == (TOP_OFFSET_ENEMIES + t->height + ENEMIES_GAP_Y)) {
-                    t->texture = enemySecondRowB;
+                    t->texture = enemySecondRowBTexture;
                 } else if (t->y >= (TOP_OFFSET_ENEMIES + t->height + ENEMIES_GAP_Y)) {
-                    t->texture = enemyOtherRowsB;
+                    t->texture = enemyOtherRowsBTexture;
                 }
             }
             
             if (!t->health && t->reload <= ENEMIES_TICK_DELAY) {
-                t->texture = deadEnemy;
+                t->texture = deadEnemyTexture;
                 t->reload = 100;
             }
 

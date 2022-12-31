@@ -23,14 +23,14 @@ int main() {
     player.texture = loadTexture(loadSurface("resources/player.png"));
     // SDL_Texture* playBackground = loadTexture(loadSurface("resources/background1.jpg"));
     enemyBulletTexture = loadTexture(loadSurface("resources/enemyBullet.png"));
-    extraEnemy = loadTexture(loadSurface("resources/extraEnemy.png"));
-    enemyFirstRowB = loadTexture(loadSurface("resources/1b.png"));
-    enemySecondRowB = loadTexture(loadSurface("resources/2b.png"));
-    enemyOtherRowsB = loadTexture(loadSurface("resources/3b.png"));
-    enemyFirstRowA = loadTexture(loadSurface("resources/1a.png"));
-    enemySecondRowA = loadTexture(loadSurface("resources/2a.png"));
-    enemyOtherRowsA = loadTexture(loadSurface("resources/3a.png"));
-    deadEnemy = loadTexture(loadSurface("resources/dead.png"));
+    extraEnemyTexture = loadTexture(loadSurface("resources/extraEnemy.png"));
+    enemyFirstRowBTexture = loadTexture(loadSurface("resources/1b.png"));
+    enemySecondRowBTexture = loadTexture(loadSurface("resources/2b.png"));
+    enemyOtherRowsBTexture = loadTexture(loadSurface("resources/3b.png"));
+    enemyFirstRowATexture = loadTexture(loadSurface("resources/1a.png"));
+    enemySecondRowATexture = loadTexture(loadSurface("resources/2a.png"));
+    enemyOtherRowsATexture = loadTexture(loadSurface("resources/3a.png"));
+    deadEnemyTexture = loadTexture(loadSurface("resources/dead.png"));
 
 
     Entity* firstBullet = NULL;
@@ -113,7 +113,7 @@ int main() {
         presentScene();
 
         if (timeElapsed < (1000 / 60)) SDL_Delay(1000/60 - timeElapsed);
-        printf("Time elapsed - %ld\n", timeElapsed);
+        // printf("Time elapsed - %ld\n", timeElapsed);
 
         if (!player.health && --playerLives > 0) {
             showTransitionalScene(playerLives, SansBold);
@@ -141,6 +141,15 @@ int main() {
         showGameOverScene(SansBold, smallSans);
     }
 
+    SDL_DestroyTexture(enemyBulletTexture);
+    SDL_DestroyTexture(extraEnemyTexture);
+    SDL_DestroyTexture(enemyFirstRowBTexture);
+    SDL_DestroyTexture(enemySecondRowBTexture);
+    SDL_DestroyTexture(enemyOtherRowsBTexture);
+    SDL_DestroyTexture(enemyFirstRowATexture);
+    SDL_DestroyTexture(enemySecondRowATexture);
+    SDL_DestroyTexture(enemyOtherRowsATexture);
+    SDL_DestroyTexture(deadEnemyTexture);
     freeingAllocations(extraEnemy);
     freeingAllocations(walls);
     freeingAllocations(firstEnemyBullet);
@@ -158,6 +167,5 @@ int main() {
     TTF_CloseFont(SansBold);
     TTF_Quit();
     SDL_Quit();
-
     return 0;
 }
