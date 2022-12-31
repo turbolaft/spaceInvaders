@@ -21,6 +21,17 @@ int main() {
     memset(&player, 0, sizeof(Entity));
 
     player.texture = loadTexture(loadSurface("resources/player.png"));
+    // SDL_Texture* playBackground = loadTexture(loadSurface("resources/background1.jpg"));
+    enemyBulletTexture = loadTexture(loadSurface("resources/enemyBullet.png"));
+    extraEnemy = loadTexture(loadSurface("resources/extraEnemy.png"));
+    enemyFirstRowB = loadTexture(loadSurface("resources/1b.png"));
+    enemySecondRowB = loadTexture(loadSurface("resources/2b.png"));
+    enemyOtherRowsB = loadTexture(loadSurface("resources/3b.png"));
+    enemyFirstRowA = loadTexture(loadSurface("resources/1a.png"));
+    enemySecondRowA = loadTexture(loadSurface("resources/2a.png"));
+    enemyOtherRowsA = loadTexture(loadSurface("resources/3a.png"));
+    deadEnemy = loadTexture(loadSurface("resources/dead.png"));
+
 
     Entity* firstBullet = NULL;
     Entity* addedBullet = NULL;
@@ -56,6 +67,7 @@ int main() {
 
         start = clock();
         prepareScene();
+        // blit(playBackground, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         doInput(&requestClose);
 
@@ -98,10 +110,10 @@ int main() {
 
         timeElapsed = timediff(start, end);
 
-        // if (timeElapsed < 1000 / 60) SDL_Delay(1000/60 - timeElapsed);
-        // printf("Time elapsed - %ld\n", timeElapsed);
-
         presentScene();
+
+        if (timeElapsed < (1000 / 60)) SDL_Delay(1000/60 - timeElapsed);
+        printf("Time elapsed - %ld\n", timeElapsed);
 
         if (!player.health && --playerLives > 0) {
             showTransitionalScene(playerLives, SansBold);
@@ -115,6 +127,7 @@ int main() {
             addedBullet = NULL;
             firstEnemyBullet = NULL;
             addedEnemyBullet = NULL;
+            timeToSeeAddedScores = 1;
         }
 
         if (!playerLives) {

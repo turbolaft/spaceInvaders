@@ -15,7 +15,7 @@ Entity* makeEnemyBullet(Entity* enemy) {
     enemyBullet->health = 1;
     enemyBullet->dy = 10;
     enemyBullet->next = NULL;
-    enemyBullet->texture = loadTexture(loadSurface("resources/enemyBullet.png"));
+    enemyBullet->texture = enemyBulletTexture;
 
     return enemyBullet;
 }
@@ -31,7 +31,7 @@ Entity* makeExtraEnemy() {
     enemyBullet->x = SCREEN_WIDTH;
     enemyBullet->health = 1;
     enemyBullet->dx = 10;
-    enemyBullet->texture = loadTexture(loadSurface("resources/extraEnemy.png"));
+    enemyBullet->texture = extraEnemy;
 
     return enemyBullet;
 }
@@ -54,11 +54,11 @@ void spawnEnemies(Entity** first, Entity** added) {
             enemy->next = NULL;
 
             if (i == 0) {
-                enemy->texture = loadTexture(loadSurface("resources/1b.png"));
+                enemy->texture = enemyFirstRowB;
             } else if (i == 1) {
-                enemy->texture = loadTexture(loadSurface("resources/2b.png"));
+                enemy->texture = enemySecondRowB;
             } else if (i > 1) {
-                enemy->texture = loadTexture(loadSurface("resources/3b.png"));
+                enemy->texture = enemyOtherRowsB;
             }
 
             if (i == 0 && j == 0) {
@@ -164,24 +164,24 @@ void handlingEnemy(Entity** listOfEnemies, Entity** listOfEnemyBullets, Entity**
 
             if (t->tick && t->health) {
                 if (t->y == TOP_OFFSET_ENEMIES) {
-                    t->texture = loadTexture(loadSurface("resources/1a.png"));
+                    t->texture = enemyFirstRowA;
                 } else if (t->y == (TOP_OFFSET_ENEMIES + t->height + ENEMIES_GAP_Y)) {
-                    t->texture = loadTexture(loadSurface("resources/2a.png"));
+                    t->texture = enemySecondRowA;
                 } else if (t->y >= (TOP_OFFSET_ENEMIES + t->height + ENEMIES_GAP_Y)) {
-                    t->texture = loadTexture(loadSurface("resources/3a.png"));
+                    t->texture = enemyOtherRowsA;
                 }
             } else if (!t->tick && t->health) {
                 if (t->y == TOP_OFFSET_ENEMIES) {
-                    t->texture = loadTexture(loadSurface("resources/1b.png"));
+                    t->texture = enemyFirstRowB;
                 } else if (t->y == (TOP_OFFSET_ENEMIES + t->height + ENEMIES_GAP_Y)) {
-                    t->texture = loadTexture(loadSurface("resources/2b.png"));
+                    t->texture = enemySecondRowB;
                 } else if (t->y >= (TOP_OFFSET_ENEMIES + t->height + ENEMIES_GAP_Y)) {
-                    t->texture = loadTexture(loadSurface("resources/3b.png"));
+                    t->texture = enemyOtherRowsB;
                 }
             }
             
             if (!t->health && t->reload <= ENEMIES_TICK_DELAY) {
-                t->texture = loadTexture(loadSurface("resources/dead.png"));
+                t->texture = deadEnemy;
                 t->reload = 100;
             }
 
