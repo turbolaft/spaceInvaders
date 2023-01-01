@@ -8,14 +8,14 @@
 #include <SDL2/SDL_ttf.h>
 #include <time.h>
 
-SDL_Texture* enemyBulletTexture;
-SDL_Texture* extraEnemyTexture;
-SDL_Texture* enemyFirstRowBTexture;
-SDL_Texture* enemySecondRowBTexture;
-SDL_Texture* enemyOtherRowsBTexture;
-SDL_Texture* enemyFirstRowATexture;
-SDL_Texture* enemySecondRowATexture;
-SDL_Texture* enemyOtherRowsATexture;
-SDL_Texture* deadEnemyTexture;
+extern SDL_Texture* enemyBulletTexture;
+extern SDL_Texture* extraEnemyTexture;
+extern SDL_Texture* enemyFirstRowBTexture;
+extern SDL_Texture* enemySecondRowBTexture;
+extern SDL_Texture* enemyOtherRowsBTexture;
+extern SDL_Texture* enemyFirstRowATexture;
+extern SDL_Texture* enemySecondRowATexture;
+extern SDL_Texture* enemyOtherRowsATexture;
+extern SDL_Texture* deadEnemyTexture;
 
 #endif

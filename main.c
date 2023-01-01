@@ -10,6 +10,19 @@
 #include "walls.h"
 #include "scenes.h"
 
+SDL_Texture* enemyBulletTexture;
+SDL_Texture* extraEnemyTexture;
+SDL_Texture* enemyFirstRowBTexture;
+SDL_Texture* enemySecondRowBTexture;
+SDL_Texture* enemyOtherRowsBTexture;
+SDL_Texture* enemyFirstRowATexture;
+SDL_Texture* enemySecondRowATexture;
+SDL_Texture* enemyOtherRowsATexture;
+SDL_Texture* deadEnemyTexture;
+
+App app;
+Entity player;
+
 int main() {
     memset(&app, 0, sizeof(App));
     initSDL();

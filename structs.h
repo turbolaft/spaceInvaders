@@ -35,7 +35,7 @@ typedef struct Interval{
     struct Interval* next;
 } Interval;
 
-App app;
-Entity player;
+extern App app;
+extern Entity player;
 
 #endif
